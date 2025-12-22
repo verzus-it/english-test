@@ -252,7 +252,8 @@ module.exports = (env, options) => {
             ],
             alias: {
                 '_assets': path.resolve(__dirname, 'assets'),
-                '@mixins': path.resolve(__dirname, 'src/components/app/styles/mixins.scss')
+                '@mixins': path.resolve(__dirname, 'src/components/app/styles/mixins.scss'),
+                'react/jsx-runtime': require.resolve('react/jsx-runtime.js')
             }
         },
         output: {
