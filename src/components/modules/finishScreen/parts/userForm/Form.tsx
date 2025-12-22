@@ -113,11 +113,5 @@ export const UserForm = ({setUserData, setIsFormSent}:IUserForm) => {
         <button type='submit' className={styles.submitBtn}>
             <LocalizedText name={'buttons.submit'} path={'translation'}/>
         </button>
-        <p className={styles.personal}>
-            <LocalizedText name={'form.personal.text'} path={'translation'}/>
-            <a href='https://amakids.ru/privacy_policy/' target='_blank' rel='noopener'>
-                <LocalizedText name={'form.personal.link'} path={'translation'}/>
-            </a>
-        </p>
     </form>;
 };

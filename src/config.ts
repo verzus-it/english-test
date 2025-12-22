@@ -1,6 +1,6 @@
 const config:any = {};
 
-const domainsWithInsideMode = ['amakids.ru', 'amakids.com'];
+const domainsWithInsideMode = ['amakids.ru', 'amakids.com', 'amakids.site', 'amaclass.ru'];
 const insideMode = domainsWithInsideMode.includes(window.location.hostname);
 config.prodMode = process.env.NODE_ENV === 'production';
 config.appPath = config.prodMode ? (insideMode ? '/platform' : '') + '/apps/introTests/' : '/';
@@ -10,7 +10,7 @@ config.apiHost = 'https://' + window.location.hostname + (insideMode ? '/platfor
 config.favicon = config.prodMode ? (insideMode ? '/platform' : '') : '/';
 config.personalCabinet = config.root + (insideMode ? '/platform' : '') + '/apps/student/';
 config.personalTests = config.personalCabinet + ''; // TODO вставить нужный путь к разделу с тестами
-config.website = 'https://amakids.ru/';
+config.website = config.root + '/';
 config.isIsolated = process.env.ISOLATED === 'true';
 
 config.path = {
