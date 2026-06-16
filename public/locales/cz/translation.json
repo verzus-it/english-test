@@ -1,0 +1,53 @@
+{
+  "form": {
+    "title": "„Výborně! Test je dokončen“",
+    "subtitle": "Celkové skóre v testu ",
+    "description": {
+      "new": "Chcete-li zjistit výsledky, vyplňte prosím své kontaktní údaje",
+      "website": "Na zadanou e-mailovou adresu jsme vám zaslali metodické doporučení a pokyny k získání dárku. Pokud vám zpráva nedorazila, obraťte se na technickou podporu.",
+      "platform": "Metodické doporučení jsme vám zaslali e-mailem do vašeho osobního účtu. Pokud vám zpráva nedorazila, obraťte se na technickou podporu.",
+      "platformWithGift": "Zaslali jsme vám metodické doporučení a pokyny k získání dárku na e-mail ve vašem osobním účtu. Pokud vám zpráva nedorazila, obraťte se na technickou podporu."
+    },
+    "inputPlaceholders": {
+      "name": "Jméno, Příjmení",
+      "tel": "Telefon",
+      "email": "E-mail"
+    },
+    "errors": {
+      "noUsername": "Zadejte své jméno a příjmení",
+      "incorrectUsername": "Nesprávné jméno nebo příjmení",
+      "noTel": "Zadejte telefonní číslo",
+      "incorrectTel": "Nesprávné telefonní číslo",
+      "noEmail": "Zadejte svou e-mailovou adresu",
+      "incorrectEmail": "Nesprávná e-mailová adresa"
+    },
+    "personal": {
+      "text": "Kliknutím na tlačítko vyjadřujete souhlas s ",
+      "link": "zpracováním osobních údajů"
+    }
+  },
+  "notFound": {
+    "description": "Tato stránka nebyla nalezena",
+    "back": "Zpět na hlavní stránku"
+  },
+  "buttons": {
+    "back": "Zpět",
+    "next": "Dále",
+    "done": "Dokončit",
+    "submit": "Odeslat",
+    "ok": "OK",
+    "repeat": "Opakovat",
+    "download": "Stáhnout výsledky",
+    "loading": "Načítání výsledků..."
+  },
+  "tooltip": "Odpovězte alespoň na jednu otázku",
+  "pdf": {
+    "title": "Test znalostí anglického jazyka",
+    "score": "Počet bodů"
+  },
+  "error": {
+    "title": "Nelze odeslat výsledky",
+    "textRepeat": "Zkuste to znovu",
+    "textTech": "Obraťte se na technickou podporu"
+  }
+}

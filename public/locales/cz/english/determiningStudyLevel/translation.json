@@ -1,0 +1,28 @@
+{
+  "greeting": {
+    "title": {
+      "firstTime": "Vyplň test",
+      "common1": "Vyplň test a zjisti, jaká úroveň nášho kurzu „Angličtina“ od ",
+      "common2": " ti sedí nejlépe"
+    },
+    "description": {
+      "firstTime1": "Vyplň test a zjisti, jaká úroveň nášho kurzu „Angličtina“ od ",
+      "firstTime2": " ti sedí nejlépe. Odpověz na otázky, z nichž každá má pouze jednu správnou odpověď. K dokončení testu musíš odpovědět alespoň na jednu otázku",
+      "common": "Odpověz na otázky, z nichž každá má pouze jednu správnou odpověď. K dokončení testu musíš odpovědět alespoň na jednu otázku"
+    },
+    "startTest": "Vyplnit test",
+    "childrenFrom": "Pro děti od",
+    "sixToTen": "6 až 10 let",
+    "elevenToFourteen": "11 až 14+ let"
+  },
+  "tasks": {
+    "done": "Dokončeno",
+    "lookAndChoose": "Vyber správnou odpověď.",
+    "dragAndDropWord": "Podívej se na obrázky a přiřaď k nim slova.",
+    "chooseOne": "Přečti si věty a vyber správnou odpověď.",
+    "inputSentence": "Seřaď slova ve správném pořadí, abys vytvořil věty.",
+    "trueOrFalse": "Podívej se na obrázek, přečti si větu a vyber správnou odpověď.",
+    "readText": "Přečti si text a vyber správnou odpověď.",
+    "listenAndChoose": "Poslechni si nahrávku a vyber správnou odpověď."
+  }
+}
