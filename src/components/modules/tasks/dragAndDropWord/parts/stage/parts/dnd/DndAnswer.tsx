@@ -1,105 +1,101 @@
-import React, {useState, useEffect} from 'react';
+import React, {useRef} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import classNames from 'classnames';
 
-import {setTaskDone} from '@reducers/testData/dispatchers';
 import styles from './styles.scss';
 
-interface DragWordI {
+export interface DragItem {
     word:string;
-    id:number;
-    answers?:string[];
-    setAnswer?:React.Dispatch<React.SetStateAction<string | null>>;
+    // Откуда тащим: индекс ячейки-источника или null, если слово из общего пула.
+    fromCell:number | null;
+    width?:number;
+    height?:number;
 }
 
-export const DndAnswer = ({words, answers, taskId, wordIndex}) => {
-    const [answer, setAnswer] = useState<string>();
-    const [id, setId] = useState<number>();
-    const currentAnswers = [...answers];
+interface PoolWordProps {
+    word:string;
+    used:boolean;
+}
 
-    useEffect(() => {
-        setAnswer(answers[wordIndex]);
-    }, []);
+interface AnswerCellProps {
+    value:string | null;
+    cellIndex:number;
+    onDrop:(item:DragItem, toCell:number) => void;
+}
 
-    //Проверка верных ответов
-    useEffect(() => {
-        if (answer) {
-            currentAnswers[wordIndex] = answer;
-            answers = [...currentAnswers];
-
-            if (!answers.includes(null || undefined) && answers.length >= words.length)
-                setTaskDone({key: taskId, done: true, value: answers});
-            else setTaskDone({key: taskId, done: false, value: answers});
-        } else if (answer === null) {
-            answers[wordIndex] = answer;
-            setTaskDone({key: taskId, done: false, value: answers});
-        }
-    }, [answer]);
-
-    return <>
-        {answer
-            ? <DragWord
-                word={answer}
-                id={id}
-                setAnswer={setAnswer}
-            />
-            : <DropCell
-                words={words}
-                setAnswer={setAnswer}
-                setId={setId}
-            />
-        }
-    </>;
-};
-
-const DropCell = ({words, setAnswer, setId}) => {
-    const [{isOver}, drop] = useDrop(() => ({
-        accept: 'word',
-        drop: (item:any) => {
-            addWord(item);
-        },
-        collect: (monitor) => ({
-            isOver: !!monitor.isOver()
-        })
-    }));
-
-    const addWord = (item) => {
-        setAnswer(words[item.id].word);
-        setId(item.id);
-    };
-
-    return <div
-        ref={drop}
-        className={classNames(
-            styles.dropCell,
-            isOver && styles.dropCellOver
-        )}
-    />;
-};
-
-export const DragWord = ({word, id, answers, setAnswer}:DragWordI) => {
-    const [isDropped, setIsDropped] = useState<boolean>(answers && answers.includes(word) ? true : false);
+// Слово в нижнем пуле вариантов. Можно перетащить в любую ячейку.
+// Когда слово уже расставлено в ячейку — прячем его в пуле.
+export const PoolWord = ({word, used}:PoolWordProps) => {
+    const ref = useRef<HTMLDivElement>(null);
 
     const [{isDragging}, drag] = useDrag(() => ({
         type: 'word',
-        item: {
-            id: id
+        item: ():DragItem => {
+            const rect = ref.current?.getBoundingClientRect();
+            return {word, fromCell: null, width: rect?.width, height: rect?.height};
         },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
-        }),
-        end(_draggedItem, monitor) {
-            setIsDropped(monitor.didDrop());
-            if (setAnswer && monitor.didDrop()) setAnswer(null);
-        },
-    }), [id]);
+        })
+    }), [word]);
+
+    drag(ref);
 
     return <div
-        ref={drag}
+        ref={ref}
         className={classNames(
             styles.dragWord,
             isDragging && styles.dragWordDragging,
-            isDropped && styles.dragWordDropped
+            used && styles.dragWordDropped
         )}
     >{word}</div>;
+};
+
+// Ячейка под картинкой. Всегда является зоной сброса (drop),
+// а когда заполнена — ещё и источником перетаскивания (drag),
+// что позволяет менять расставленные слова местами.
+export const AnswerCell = ({value, cellIndex, onDrop}:AnswerCellProps) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    const [{isOver}, drop] = useDrop(() => ({
+        accept: 'word',
+        canDrop: (item:DragItem) => item.fromCell !== cellIndex,
+        drop: (item:DragItem) => onDrop(item, cellIndex),
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver() && !!monitor.canDrop()
+        })
+    }), [cellIndex, onDrop]);
+
+    const [{isDragging}, drag] = useDrag(() => ({
+        type: 'word',
+        canDrag: () => value != null,
+        item: ():DragItem => {
+            const rect = ref.current?.getBoundingClientRect();
+            return {word: value as string, fromCell: cellIndex, width: rect?.width, height: rect?.height};
+        },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging()
+        })
+    }), [value, cellIndex]);
+
+    drag(drop(ref));
+
+    if (value == null) {
+        return <div
+            ref={ref}
+            className={classNames(
+                styles.dropCell,
+                isOver && styles.dropCellOver
+            )}
+        />;
+    }
+
+    return <div
+        ref={ref}
+        className={classNames(
+            styles.dragWord,
+            isDragging && styles.dragWordDragging,
+            isOver && styles.dragWordOver
+        )}
+    >{value}</div>;
 };

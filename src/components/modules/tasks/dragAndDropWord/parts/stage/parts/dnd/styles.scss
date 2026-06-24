@@ -61,6 +61,12 @@
     transform: scale(1);
     transition: .2s ease;
     cursor: pointer;
+    // Без этого браузер на тач-устройствах перехватывает жест под скролл,
+    // и TouchBackend не получает touchmove — слово «не перетягивается».
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 
     @include lg {
         width: 100%;
@@ -100,10 +106,52 @@
         }
     }
 
+    // Подсветка заполненной ячейки, когда на неё наводят другое слово (обмен местами).
+    &Over {
+        background-color: #CCEDFF;
+        border-style: dashed;
+    }
+
     &Dropped {
         visibility: hidden;
         opacity: 0;
         transform: scale(0);
         pointer-events: none;
+    }
+
+    // Превью под пальцем на тач-устройствах. Размеры приходят инлайном
+    // из реального размера перетаскиваемого элемента.
+    &Preview {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 8px;
+        border: 1px solid rgba(46, 30, 144, 0.4);
+        border-radius: 10px;
+        background-color: #CCEDFF;
+        opacity: 0.9;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 120%;
+        letter-spacing: 0.02em;
+        text-align: center;
+        box-sizing: border-box;
+
+        @include lg {
+            font-size: 18px;
+        }
+        @include md {
+            font-size: 16px;
+        }
+        @include sm {
+            font-size: 14px;
+            line-height: 100%;
+            letter-spacing: 0.01em;
+        }
+        @include xs {
+            font-size: 12px;
+        }
     }
 }

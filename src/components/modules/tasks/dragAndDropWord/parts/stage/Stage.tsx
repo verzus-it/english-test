@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 
-import {setTaskStatus} from '@reducers/testData/dispatchers';
-import {DndAnswer, DragWord} from './parts';
+import {setTaskStatus, setTaskDone} from '@reducers/testData/dispatchers';
+import {AnswerCell, PoolWord, DragItem} from './parts';
 import styles from './styles.scss';
 
 export const Stage = ({task}) => {
@@ -10,7 +10,7 @@ export const Stage = ({task}) => {
     const {subject, test, option, tasksProgress} = testData;
     const words:any[] = task.option[option].words;
     const correctAnswer:string[] = task.option[option].correctAnswer;
-    const currentAnswer:string[] = [...tasksProgress[+task.id - 1].currentAnswer];
+    const currentAnswer:(string | null)[] = [...tasksProgress[+task.id - 1].currentAnswer];
 
     useEffect(() => {
         //Сравниваем результаты
@@ -25,6 +25,25 @@ export const Stage = ({task}) => {
         else setTaskStatus({key: task.id, status: false, score: score});
     }, [currentAnswer]);
 
+    // Расстановка/обмен слов. Источник — пул (fromCell === null) или другая ячейка.
+    const handleDrop = (item:DragItem, toCell:number) => {
+        const next:(string | null)[] = words.map((_, i) => currentAnswer[i] ?? null);
+
+        if (item.fromCell != null) {
+            // Перетащили из другой ячейки — меняем содержимое местами.
+            if (item.fromCell === toCell) return;
+            const displaced = next[toCell];
+            next[toCell] = next[item.fromCell];
+            next[item.fromCell] = displaced ?? null;
+        } else {
+            // Перетащили из пула — ставим слово; прежнее слово ячейки уходит обратно в пул.
+            next[toCell] = item.word;
+        }
+
+        const done = next.length >= words.length && next.every((a) => a != null);
+        setTaskDone({key: task.id, done, value: next});
+    };
+
     return <div key={task.id} className={styles.task}>
         <span className={styles.taskNumber}>{task.id}.</span>
         <div className={styles.dropCellsContainer}>
@@ -37,24 +56,22 @@ export const Stage = ({task}) => {
                             className={styles.image}
                         />
                     </div>
-                    <DndAnswer
-                        words={words}
-                        answers={currentAnswer}
-                        taskId={task.id}
-                        wordIndex={index}
+                    <AnswerCell
+                        value={currentAnswer[index] ?? null}
+                        cellIndex={index}
+                        onDrop={handleDrop}
                     />
                 </div>;
             })}
         </div>
         <div className={styles.dragWordsContainer}>
             {words.map((word, index) => {
-                return <DragWord
+                return <PoolWord
                     key={index}
                     word={word.word}
-                    answers={currentAnswer}
-                    id={index}
+                    used={currentAnswer.includes(word.word)}
                 />;
             })}
         </div>
-    </div>; 
+    </div>;
 };
