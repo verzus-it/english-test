@@ -1,0 +1,1 @@
+export {getStudyParams} from './getStudyParams';

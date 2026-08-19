@@ -6,6 +6,7 @@ import config from '@config';
 import {ApiActions, ApiConnector} from '@lib/apiConnector';
 import {LocalizedText} from '@components/elements/localizedText';
 import {getSubjectID} from '@lib/getSubjectID';
+import {getStudyParams} from '@lib/getStudyParams';
 import styles from './styles.scss';
 
 interface IUserError {
@@ -48,7 +49,8 @@ export const UserError = ({
                 testSubcategory: option,
                 wrongAnswers: tasksWithWrongAnswers,
                 score: finalScore,
-                maxScore: maxScore
+                maxScore: maxScore,
+                ...getStudyParams()
             };
 
             if (source == 'website') {

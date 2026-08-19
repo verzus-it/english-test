@@ -50,7 +50,14 @@ export type UserDataT = {
     email:string;
 };
 
-export type PostDataT = {
+export type StudyFormT = 'online'|'offline';
+
+export type StudyParamsT = {
+    filialID?:number;
+    studyForm?:StudyFormT;
+};
+
+export type PostDataT = StudyParamsT & {
     subject:string;
     test:string;
     source:'platform'|'website';

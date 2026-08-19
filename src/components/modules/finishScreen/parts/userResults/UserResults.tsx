@@ -6,6 +6,7 @@ import {UserDataT, PostDataT} from '@components/types';
 import config from '@config';
 import {ApiActions, ApiConnector} from '@lib/apiConnector';
 import {getSubjectID} from '@lib/getSubjectID';
+import {getStudyParams} from '@lib/getStudyParams';
 import {LocalizedText} from '@components/elements/localizedText';
 import {PdfResults} from './parts';
 import styles from './styles.scss';
@@ -56,7 +57,8 @@ export const UserResults = ({
                 testSubcategory: option,
                 wrongAnswers: tasksWithWrongAnswers,
                 score: finalScore,
-                maxScore: maxScore
+                maxScore: maxScore,
+                ...getStudyParams()
             };
 
             if (!authorized) {
