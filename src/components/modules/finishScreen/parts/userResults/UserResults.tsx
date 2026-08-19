@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
-import {PDFDownloadLink} from '@react-pdf/renderer';
 
 import {UserDataT, PostDataT} from '@components/types';
 import config from '@config';
@@ -8,7 +7,6 @@ import {ApiActions, ApiConnector} from '@lib/apiConnector';
 import {getSubjectID} from '@lib/getSubjectID';
 import {getStudyParams} from '@lib/getStudyParams';
 import {LocalizedText} from '@components/elements/localizedText';
-import {PdfResults} from './parts';
 import styles from './styles.scss';
 
 interface IUserResults {
@@ -30,10 +28,8 @@ export const UserResults = ({
     failedAttempts,
     setFailedAttempts
 }:IUserResults) => {
-    const {authorized, enrolledOnCourse, common} = useSelector((state:any) => state.commonData);
-    const {subject, test, option, tasksData, tasksProgress} = useSelector((state:any) => state.testData);
-
-    const isAmakids = common?.company.title.toLowerCase() === 'amakids';
+    const {authorized, enrolledOnCourse} = useSelector((state:any) => state.commonData);
+    const {subject, test, option, tasksProgress} = useSelector((state:any) => state.testData);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -127,24 +123,6 @@ export const UserResults = ({
                     <span>{maxScore}</span>
                 </div>
             </div>
-            <PDFDownloadLink
-                className={styles.downloadBtn}
-                document={<PdfResults
-                    finalScore={finalScore}
-                    tasks={tasksData}
-                    progress={tasksProgress}
-                    subject={subject}
-                    test={test}
-                    option={option}
-                    isAmakids={isAmakids}
-                />}
-                fileName='results.pdf'
-            >
-                {({loading}) => (loading
-                    ? <LocalizedText name={'buttons.loading'} path={'translation'}/> 
-                    : <LocalizedText name={'buttons.download'} path={'translation'}/> 
-                )}
-            </PDFDownloadLink>
             {isLoading
                 ? <div className={styles.loading}>
                     <LocalizedText name={'buttons.loading'} path={'translation'}/> 
