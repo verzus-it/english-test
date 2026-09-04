@@ -7,6 +7,7 @@
     "start": "npm cache clear --force & webpack serve --mode development",
     "startIsolated": "npm cache clear --force & cross-env ISOLATED=true webpack serve --mode development --progress",
     "build": "rimraf dist & webpack --mode production --progress",
+    "copyBuild": "robocopy dist D:\\OSPanel6\\home\\amakids-platform\\apps\\introTests /MIR /XF .htaccess & if errorlevel 8 exit /b 1",
     "buildTest": "rimraf dist & webpack --mode development",
     "patch": "npm version patch",
     "test": "jest",

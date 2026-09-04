@@ -1,7 +1,6 @@
 const config:any = {};
 
-const domainsWithInsideMode = ['amakids.ru', 'amakids.com', 'amakids.site', 'amaclass.ru'];
-const insideMode = domainsWithInsideMode.includes(window.location.hostname);
+const insideMode = window.location.pathname.indexOf('/platform/') === 0;
 config.prodMode = process.env.NODE_ENV === 'production';
 config.appPath = config.prodMode ? (insideMode ? '/platform' : '') + '/apps/introTests/' : '/';
 config.root = 'https://' + window.location.hostname;

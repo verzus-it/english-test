@@ -6,20 +6,14 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script type="text/javascript" >
 		var base;
-		switch (window.location.hostname){
-			case 'amakids.ru':
-            case 'amakids.com':
-            case 'amakids.site':
-            case 'amaclass.ru':
-				base = '/platform/apps/introTests/';
-				break;
-
-			case 'localhost':
-				base = window.location.port ? '/' : '/apps/introTests/';
-				break;
-
-			default:
-				base = '/apps/introTests/';
+		var marker = 'apps/introTests/';
+		var idx = window.location.pathname.indexOf(marker);
+		if (idx !== -1) {
+			// приложение открыто по своему пути (в т.ч. /platform/apps/introTests/)
+			base = window.location.pathname.slice(0, idx + marker.length);
+		} else {
+			// корень (например, localhost с портом)
+			base = '/';
 		}
 
 		document.write('<base href="' + base + '"/>');
